@@ -1,0 +1,12 @@
+#!/bin/bash
+TICKET='5837'
+BNAME='testing101'
+UMV='vn10.7'
+USER='danielellis'
+# user is the long fullname
+LOC='~/dev/'
+
+
+fcm branch-create -k $TICKET $BNAME fcm:um.x_tr@$UMV;
+
+cd $LOC && fcm checkout fcm:um.x_br/dev/$USER/${UMV}_$BNAME;
