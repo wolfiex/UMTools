@@ -1,7 +1,7 @@
 #!/bin/bash
 TICKET='5837'
-BNAME='testing101'
-UMV='vn10.7'
+BNAME='test001'
+UMV='vn11.0'
 USER='danielellis'
 # user is the long fullname
 LOC='~/dev/'
