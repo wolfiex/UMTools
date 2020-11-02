@@ -51,5 +51,7 @@ SITE='Meto_cray'
 !!TASKEND='0,0,2,0,0,0'
 USE_PREBUILD=true
 
-
+[command]
+default=rm -rf ${RUNDIR}
+app/housekeep/rose-app.conf lines 1-2/2 (END) 
 
