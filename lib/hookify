@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-=begin comment
+my $readme = "
 
 Script to convert a new rose suite for use with DrHook.
 Inputs: 
@@ -26,8 +26,7 @@ Lisence:
     Apache Lisence (this notice must be retained)
     https://github.com/github/choosealicense.com/blob/gh-pages/_licenses/apache-2.0.txt
 
-
-=end comment
+";
 
 
 my $selection;
@@ -72,7 +71,7 @@ if (-e $selection and -d $selection) {
 	close $file;
 	print "$desc \n\n"; 
 } else {
-        exit "directory does not exist";
+        exit "\n\nDirectory does not exist";
 }
 
 
