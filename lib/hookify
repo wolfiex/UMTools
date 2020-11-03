@@ -1,0 +1,162 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+=begin comment
+
+Script to convert a new rose suite for use with DrHook.
+Inputs: 
+      Dir Location
+      None: asks for user input
+   
+Arguments: 
+      Machine: Monsoon
+      Original: Use the original backup
+
+
+Author:
+      Daniel Ellis 
+      d.ellis(@)leeds.ac.uk | daniel.ellis.research(@)gmail.com
+
+Attribution:
+      CEMAC
+      
+Lisence:
+    Apache Lisence (this notice must be retained)
+    https://github.com/github/choosealicense.com/blob/gh-pages/_licenses/apache-2.0.txt
+
+
+=end comment
+
+
+my $selection;
+my $original = 'true';
+my $machine = 'Monsoon';
+
+# If an argument exists use that, otherwise ask for location
+if (@ARGV){ 
+
+	$selection = $ARGV[0];
+
+}else{
+
+	my @files = glob "~/roses/*/";
+	for (0..$#files){
+	  $files[$_] =~ s/\.txt$//;
+	}
+
+	print @files;
+
+	my $i;
+	for($i=0; $i<=$#files; $i++) {
+	    my $suite = $files[$i];
+	    $suite =~ s/.*\/(u-\w+)\//$1/g ;
+	    print("$i - $suite\n");
+	}
+
+	print "Enter Selection:\n\n";
+	my $id = <STDIN>;
+	chomp $id;
+	 
+
+	$selection = $files[$id];
+
+}
+print ("\n\nSelected: $selection\n");
+
+
+if (-e $selection and -d $selection) {
+	open my $file, '<', $selection."rose-suite.info"; 
+	my $desc = <$file>; 
+	close $file;
+	print "$desc \n\n"; 
+} else {
+        exit "directory does not exist";
+}
+
+
+#############################################################
+#app/housekeep/rose-app.conf
+#############################################################
+my $file = $selection."app/housekeep/rose-app.conf";
+my $subs="mailx -s \"Run Completed\" \$USER <<<\$'\\n \$CYLC_TASK_WORK_DIR/ \\n'; # ";
+
+print "Running $file\n";
+
+if (!-e $file.'.bak' and $original){ rename($file, $file.'.bak');}
+open(IN, '<'.$file.'.bak') or die $!;
+open(OUT, '>'.$file) or die $!;
+while(<IN>)
+{
+    #$_ =~ 
+    s/(default=)([^\n]+)/$1 $subs $2/g;
+    print OUT $_; 
+}
+close(IN);
+close(OUT);
+
+
+
+#############################################################
+#app/fcm_make/rose-app.conf
+#############################################################
+my $file = $selection."app/fcm_make/rose-app.conf";
+print "Running $file\n";
+
+if (!-e $file.'.bak' and $original){ rename($file, $file.'.bak');}
+open(IN, '<'.$file.'.bak') or die $!;
+open(OUT, '>'.$file) or die $!;
+while(<IN>)
+{
+    s/DR_HOOK=false/DR_HOOK=true/g;
+    print OUT $_; 
+}
+close(IN);
+close(OUT);	
+
+
+#############################################################
+#app/um/rose-app.conf
+#############################################################
+my $file = $selection."app/um/rose-app.conf";
+print "Running $file\n";
+
+if (!-e $file.'.bak' and $original){ rename($file, $file.'.bak');}
+open(IN, '<'.$file.'.bak') or die $!;
+open(OUT, '>'.$file) or die $!;
+while(<IN>)
+{
+    s/DR_HOOK=false/DR_HOOK=true/g;
+    s/!!(DR_HOOK)/$1/g;
+    s/(DR_HOOK_PROFILE_LIMIT=).*\n/$1-1\n/g;
+    print OUT $_; 
+}
+close(IN);
+close(OUT);
+
+
+#############################################################
+#rose-suite.conf
+#############################################################
+my $file = $selection."rose-suite.conf";
+
+print "Running $file\n";
+
+if (!-e $file.'.bak' and $original){ rename($file, $file.'.bak');}
+open(IN, '<'.$file.'.bak') or die $!;
+open(OUT, '>'.$file) or die $!;
+while(<IN>)
+{
+    #$_ =~ 
+    s/(USE_PREBUILD=).*\n/$1false\n/g;
+    s/(SITE=).*\n/$1'$machine'\n/g;
+    print OUT $_; 
+}
+close(IN);
+close(OUT);
+
+
+#############################################################
+
+
