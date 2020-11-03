@@ -27,7 +27,7 @@ Lisence:
     https://github.com/github/choosealicense.com/blob/gh-pages/_licenses/apache-2.0.txt
 
 
-=end comment =cut
+=end comment
 
 
 my $selection;
