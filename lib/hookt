@@ -1,0 +1,75 @@
+#!/opt/python/gnu/2.7.9/bin/python
+
+'''
+Transfer hook files from a run to the see gateway
+
+
+Author: Dan Ellis 
+Email: daniel.ellis.research(@)gmail.com | d.ellis(@)leeds.ac.uk
+
+
+'''
+
+import os, glob, time, zipfile, sys, re
+
+user = 'earde'
+machine = 'see-gw-01.leeds.ac.uk'
+location = '/nfs/earcemac/%s/scratch'%user
+
+if '--last' in sys.argv: latest = True
+else: latest = False 
+
+
+home = os.environ['HOME']
+files = glob.glob(home+'/cylc-run/*/')
+mod = dict([[i,os.path.getmtime(i)] for i in files])
+files = sorted(files,key=lambda x: -mod[x] )
+
+
+for i,key in enumerate(files):
+	print (i,key.split('/')[-2],time.ctime(mod[key]))
+
+if latest: selection = files[0]
+else: selection = files[int(input('\nSelect run to transfer:\n'))]
+
+print(selection)
+
+run = selection.split('/')[-2]
+# date = time.strftime('_%Y_%m%d_%H%M_',time.localtime(os.path.getmtime('./')))
+
+tlog  = ' '.join(tuple(open(selection+'trac.log')))
+match = re.findall(r'(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2}):',tlog)[0]
+date = '_%s-%s%s-%s%s_'%match
+
+print('\nwriting zip:')
+atmos = glob.glob(selection+'work/1/atmos*')
+
+
+for at in atmos:
+
+	atname = at.split('/')[-1]
+	print(atname)
+
+
+
+fname = selection + 'hookfiles_' + run + date + '.zip'  
+zipf = zipfile.ZipFile( fname , 'w', zipfile.ZIP_DEFLATED)
+
+allfiles = glob.glob(selection+'work/1/atmos*/drhook.prof.*')
+allfiles.sort()
+
+arcname = selection+'work/1' # dont use full path as its messy
+for hf in allfiles:
+	zipf.write(hf,hf.replace(arcname,''))
+
+
+
+zipf.close()
+print('\n' + fname)
+
+print('\nFiles Written')
+
+os.system('kc')
+os.system('scp %s %s@%s:%s'%(fname,user,machine,location))
+
+print('\nCheck above for scp transfer')
