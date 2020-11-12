@@ -31,9 +31,11 @@ print(modi)
 files = sorted(files,key=lambda x: -modi[x] )
 
 for i,key in enumerate(files):
-	print (i,key.split('/')[-2],time.ctime(modi[key]))
+	try: tlog  = tuple(open(key+'/trac.log'))[3].split('||')[2]
+	except IOError: tlog = '--------------------'	
+	print (i,key.split('/')[-2],tlog)
 
-
+	
 if latest: selection = files[0]
 else: selection = files[int(input('\nSelect run to transfer:\n'))]
 
