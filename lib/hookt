@@ -9,8 +9,10 @@ Email: daniel.ellis.research(@)gmail.com | d.ellis(@)leeds.ac.uk
 
 
 '''
-
+print('starting hookt')
+#import hcp
 import os, glob, time, zipfile, sys, re
+
 
 user = 'earde'
 machine = 'see-gw-01.leeds.ac.uk'
@@ -19,15 +21,18 @@ location = '/nfs/earcemac/%s/scratch'%user
 if '--last' in sys.argv: latest = True
 else: latest = False 
 
-
 home = os.environ['HOME']
-files = glob.glob(home+'/cylc-run/*/')
-mod = dict([[i,os.path.getmtime(i)] for i in files])
-files = sorted(files,key=lambda x: -mod[x] )
 
+
+files = glob.glob(home+'/cylc-run/u-*/')
+print(home,len(files),files)
+modi = dict([[i,os.path.getmtime(i)] for i in files])
+print(modi)
+files = sorted(files,key=lambda x: -modi[x] )
 
 for i,key in enumerate(files):
-	print (i,key.split('/')[-2],time.ctime(mod[key]))
+	print (i,key.split('/')[-2],time.ctime(modi[key]))
+
 
 if latest: selection = files[0]
 else: selection = files[int(input('\nSelect run to transfer:\n'))]
@@ -37,16 +42,16 @@ print(selection)
 run = selection.split('/')[-2]
 # date = time.strftime('_%Y_%m%d_%H%M_',time.localtime(os.path.getmtime('./')))
 
-tlog  = ' '.join(tuple(open(selection+'trac.log')))
+tlog  = ' '.join(tuple(open(selection+'/trac.log')))
 match = re.findall(r'(\d{4})\/(\d{2})\/(\d{2}) (\d{2}):(\d{2}):',tlog)[0]
 date = '_%s-%s%s-%s%s_'%match
 
 print('\nwriting zip:')
+print(selection,selection+'work/1/atmos')
 atmos = glob.glob(selection+'work/1/atmos*')
 
 
 for at in atmos:
-
 	atname = at.split('/')[-1]
 	print(atname)
 
@@ -69,7 +74,7 @@ print('\n' + fname)
 
 print('\nFiles Written')
 
-os.system('kc')
+os.system('source $HOME/bin/bashrc && kc')
 os.system('scp %s %s@%s:%s'%(fname,user,machine,location))
 
 print('\nCheck above for scp transfer')
