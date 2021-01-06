@@ -41,7 +41,7 @@ print 'Number of links: ' , len(lines)
 
 for i in lines:
     fail = False    
-    if 'No such file' in os.popen('ls '+i + " 2>&1).read():
+    if 'No such file' in os.popen('ls '+i + ' 2>&1').read():
 	fail = True
     else:
 	permissions = os.popen('namei -l '+i).readlines()
