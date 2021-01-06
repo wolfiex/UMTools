@@ -80,7 +80,7 @@ with open(fn,'w') as f:
 	for k in failed:
 		f.write( '\n\n-----------FAILED-----------\n\n')
 		f.write(k+'\n\n')
-		print 'grep -inr "%s" %s*'%(k,selection)
+# 		print 'grep -inr "%s" %s*'%(k,selection)
 		f.write(os.popen('grep -inr "%s" %s*'%(k,selection)).read())
 		f.write('\n\n')	
 print '-----'
