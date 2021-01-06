@@ -25,4 +25,4 @@ print(selection)
 
 
 
-grep -inr "[\"']\s*/[^\"']*" *
+#grep -inr "[\"']\s*/[^\"']*" *
