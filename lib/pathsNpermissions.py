@@ -65,7 +65,7 @@ for i in lines:
 	else:
 		sucessful.append(i)
 		
-run = selection.split('/')[-1]
+run = selection.split('/')[-2]
 fn = '%spathtest_%s.txt'%(selection.split('roses')[0],run)
 print fn
 with open(fn,'w') as f:
