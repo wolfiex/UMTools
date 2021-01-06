@@ -60,10 +60,10 @@ for i in lines:
 			break
 			
 			
-	if fail: 
-		failed.append(i)
-	else:
-		sucessful.append(i)
+    if fail: 
+	failed.append(i)
+    else:
+	sucessful.append(i)
 		
 run = selection.split('/')[-2]
 fn = '%spathtest_%s.txt'%(selection.split('roses')[0],run)
@@ -76,8 +76,9 @@ with open(fn,'w') as f:
 		f.write(k+'\n')
 		
 		
-	f.write( '\n\n-----------FAILED-----------\n\n')
+# 	f.write( '\n\n-----------FAILED-----------\n\n')
 	for k in failed:
+		f.write( '\n\n-----------FAILED-----------\n\n')
 		f.write(k+'\n\n')
 		print 'grep -inr "%s" %s*'%(k,selection)
 		f.write(os.popen('grep -inr "%s" %s*'%(k,selection)).read())
