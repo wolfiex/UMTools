@@ -66,7 +66,8 @@ for i in lines:
 		sucessful.append(i)
 		
 run = selection.split('/')[-1]
-fn = '~/pathtest_%s.txt'%(run)
+fn = '%spathtest_%s.txt'%(selection.split('roses')[0],run)
+print fn
 with open(fn,'w') as f:
 	f.write('Path Analysis for '+run+'\n\n\n')
 	f.write( 'Sucessful finds:\n\n')
