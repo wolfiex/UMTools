@@ -39,16 +39,52 @@ groups.append(os.popen('echo $USER').read().strip())
 
 print 'Number of links: ' , len(lines)
 
+sucessful = []
+failed = []
+
 for i in lines:
-    fail = False    
+    fail = True    
     if 'No such file' in os.popen('ls '+i + ' 2>&1').read():
 	fail = True
     else:
 	permissions = os.popen('namei -l '+i).readlines()
-	selection = filter(lambda x: x[0] not in ['d','f'] ,permissions)
-	print selection, fail
+	match = filter(lambda x: x[0] not in ['d','f'] ,permissions)
+	print match, fail
 	
-
+	
+	for j in match.split()[1:-1]:
+		# if we have user permission
+		if j in groups: 
+			fail = False
+			break
+			
+			
+	if fail: 
+		failed.append(i)
+	else:
+		sucessful.append(i)
+		
+run = selection.split('/')[-1]
+fn = '~/pathtest_%s.txt'%(run)
+runwith open(fn,'w') as f:
+	f.write('Path Analysis for '+run+'\n\n\n')
+	f.write( 'Sucessful finds:\n\n')
+	for k in sucessful:
+		f.write(k+'\n')
+		
+		
+	f.write( '\n\n-----------FAILED-----------\n\n')
+	for k in failed:
+		f.write(k+'\n\n')
+		f.write(os.popen('grep -inr "%s" %s'%(k,selection))
+		f.write('\n\n')
+			
+			
+print 'File written at ', fn
+		
+	
+		
+		
 
 
 
