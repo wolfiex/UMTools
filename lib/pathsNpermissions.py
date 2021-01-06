@@ -47,9 +47,10 @@ for i in lines:
     if 'No such file' in os.popen('ls '+i + ' 2>&1').read():
 	fail = True
     else:
-	permissions = os.popen('namei -l '+i).readlines()
+	permissions = os.popen('namei -o -v '+i).readlines()#-l
 	match = filter(lambda x: x[0] not in ['d','f'] ,permissions)
-	print match, fail
+	if len(match) == 0: match = permissions[-1]
+	print match, i
 	
 	
 	for j in match[0].split()[1:-1]:
