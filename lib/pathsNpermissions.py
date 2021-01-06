@@ -46,7 +46,7 @@ for i in lines:
     else:
 	permissions = os.popen('namei -l '+i).readlines()
 	selection = filter(lambda x: x[0] not in ['d','f'] ,permissions)
-	print selection fail
+	print selection, fail
 	
 
 
