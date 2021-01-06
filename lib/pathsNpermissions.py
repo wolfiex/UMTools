@@ -79,9 +79,10 @@ with open(fn,'w') as f:
 	for k in failed:
 		f.write(k+'\n\n')
 		f.write(os.popen('grep -inr "%s" %s'%(k,selection)).read())
-		f.write('\n\n')
-			
-			
+		f.write('\n\n')	
+print '-----'
+print 'Found: %d,  Missing: %d'%(len(sucessful),len(failed)
+ 			
 print 'File written at ', fn
 		
 	
