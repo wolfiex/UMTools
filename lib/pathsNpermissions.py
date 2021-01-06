@@ -78,7 +78,7 @@ with open(fn,'w') as f:
 	f.write( '\n\n-----------FAILED-----------\n\n')
 	for k in failed:
 		f.write(k+'\n\n')
-		f.write(os.popen('grep -inr "%s" %s'%(k,selection).read()))
+		f.write(os.popen('grep -inr "%s" %s'%(k,selection)).read())
 		f.write('\n\n')
 			
 			
