@@ -66,7 +66,7 @@ for i in lines:
 		
 run = selection.split('/')[-1]
 fn = '~/pathtest_%s.txt'%(run)
-runwith open(fn,'w') as f:
+with open(fn,'w') as f:
 	f.write('Path Analysis for '+run+'\n\n\n')
 	f.write( 'Sucessful finds:\n\n')
 	for k in sucessful:
