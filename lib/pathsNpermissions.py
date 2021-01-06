@@ -41,12 +41,12 @@ print 'Number of links: ' , len(lines)
 
 for i in lines:
     fail = False    
-    if 'No such file' in os.popen('ls '+i):
+    if 'No such file' in os.popen('ls '+i).read():
 	fail = True
     else:
 	permissions = os.popen('namei -l '+i).readlines()
-	selection = filter(lambda x: x[0]+='d',permissions)
-	print selection
+	selection = filter(lambda x: x[0] not in ['d','f'] ,permissions)
+	print selection fail
 	
 
 
