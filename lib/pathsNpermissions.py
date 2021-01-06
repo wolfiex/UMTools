@@ -52,7 +52,7 @@ for i in lines:
 	print match, fail
 	
 	
-	for j in match.split()[1:-1]:
+	for j in match[0].split()[1:-1]:
 		# if we have user permission
 		if j in groups: 
 			fail = False
