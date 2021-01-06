@@ -82,7 +82,11 @@ with open(fn,'w') as f:
 			
 print 'File written at ', fn
 		
-	
+'''
+testing 
+
+rm pathsNpermissions.py ; wget https://raw.githubusercontent.com/wolfiex/UMTools/main/lib/pathsNpermissions.py && python pathsNpermissions.py 
+'''
 		
 		
 
