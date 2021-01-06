@@ -69,7 +69,8 @@ run = selection.split('/')[-2]
 fn = '%spathtest_%s.txt'%(selection.split('roses')[0],run)
 print fn
 with open(fn,'w') as f:
-	f.write('Path Analysis for '+run+'\n\n\n')
+	f.write('Path Analysis for '+run+'\n')
+	f.write('Found: %d,  Missing: %d'%(len(sucessful),len(failed))+'\n\n\n' )
 	f.write( 'Sucessful finds:\n\n')
 	for k in sucessful:
 		f.write(k+'\n')
@@ -78,10 +79,11 @@ with open(fn,'w') as f:
 	f.write( '\n\n-----------FAILED-----------\n\n')
 	for k in failed:
 		f.write(k+'\n\n')
-		f.write(os.popen('grep -inr "%s" %s'%(k,selection)).read())
+		print 'grep -inr "%s" %s*'%(k,selection)
+		f.write(os.popen('grep -inr "%s" %s*'%(k,selection)).read())
 		f.write('\n\n')	
 print '-----'
-print 'Found: %d,  Missing: %d'%(len(sucessful),len(failed)
+print 'Found: %d,  Missing: %d'%(len(sucessful),len(failed))
  			
 print 'File written at ', fn
 		
